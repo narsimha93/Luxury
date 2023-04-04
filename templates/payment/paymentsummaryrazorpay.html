@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+{% endblock %}
+{% block css %}
+<style>
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="info">
+  <div class="container">
+    <h1 style="text-align:center;">Payment Summary</h1>
+    Total Amount - {{final_price}}
+    <br>
+    <input type="hidden" value={{final_price}} id="price">
+    <input type="hidden" value={{razorpay_merchant_id}} id="merchant_id">
+    <input type="hidden" value={{callback_url}} id="callback_url">
+    <input type="hidden" value={{order_id}} id="order_id">
+    <button id="rzp-button1" class="btn btn-lg btn-primary btn-block" type="button">Pay Now</button>
+  </div>
+
+</div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+
+  document.getElementById('rzp-button1').onclick = function (e) {
+    const key = document.getElementById("merchant_id").value
+  const amount = document.getElementById("price").value
+  const callback_url = document.getElementById("callback_url").value
+  const order_id = document.getElementById("order_id").value
+  var options = {
+    key: key, // Enter the Key ID generated from the Dashboard
+    amount: amount,  // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    currency: "INR",
+    name: "Housesearch.com",
+    description: "Test Transaction",
+    order_id: order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "callback_url": callback_url,
+    "redirect": true,
+    "prefill": {
+      "name": "{{request.user.name}}",
+      "email": "{{request.user.email}}",
+      "contact": "+91" + "{{request.user.phone}}"
+    },
+    "theme": {
+      "color": "#2BA977"
+    }
+  };
+  const rzp1 = new window.Razorpay(options);
+    rzp1.open();
+    e.preventDefault();
+  }
+</script>
+
+
+{% endblock %}
+

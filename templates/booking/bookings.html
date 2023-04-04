@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+{% block title %} | {{ listing.title }}{% endblock %}
+
+{% block content %}
+
+
+<br>
+<br>
+{% for bookings in booking  %}
+
+<div class="card my-2 mx-2">
+    <div class="card-header" style="color:green;">
+      Your house is booked
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Your house has been booked : house id: 
+        {{bookings.id}}</h5>
+      <p class="card-text"></p>
+      <a href="{% url 'payment' list_id=bookings.listing_id.id %}" class="btn btn-danger col-md-3">Make payments</a>
+    </div>
+  </div>
+  {% endfor %}
+
+
+  
+
+
+
+
+
+{% endblock %}
